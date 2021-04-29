@@ -8,7 +8,7 @@ nano /etc/sysctl.conf
 # search for ip_forward and uncomment this
 # net.ipv4.ip_forward=1
 
-sudo sysctl -p
+sysctl -p
 
 # verify if this is set to 1
 cat /proc/sys/net/ipv4/ip_forward
@@ -17,65 +17,89 @@ cat /proc/sys/net/ipv4/ip_forward
 ### Remove All Rules
 
 ```bash
-sudo iptables -F
+iptables -F
+iptables -t nat -F
 
 # to remove a specific rule
-sudo iptables -L --line-numbers
-sudo iptables -D INPUT <line_number>
+iptables -L --line-numbers
+iptables -D INPUT <line_number>
 ```
 
 ### Dropping all packets
 
 *`Note: any open connections to your VM will be dropped and network connection will be unusable.`*
 ```bash
-sudo iptables -A INPUT -j DROP
-sudo iptables -A OUTPUT -j DROP
-sudo iptables -A FORWARD -j DROP
+iptables -A INPUT -j DROP
+iptables -A OUTPUT -j DROP
+iptables -A FORWARD -j DROP
 ```
 
 ### Allow Connections to localhost
 
 ```bash
-sudo iptables -A INPUT -i lo -j ACCEPT
-sudo iptables -A OUTPUT -o lo -j ACCEPT
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A OUTPUT -o lo -j ACCEPT
 ```
 
 ### Manage your firewall from a remote machine from a LAN address
 
 SSH Access
 ```bash
-sudo iptables -A INPUT -p tcp -s 172.16.134.0/24 --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-sudo iptables -A OUTPUT -p tcp --sport 22 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+# allow lan connected machine to ssh into firewall
+iptables -A INPUT -p tcp -s 172.16.134.0/24 --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT 
+# allow outward communication when incoming state is established (NEW only on input)
+iptables -A OUTPUT -p tcp --sport 22 -m conntrack --ctstate ESTABLISHED -j ACCEPT 
+```
+
+### Bridging WAN and LAN interfaces
+
+`ens33`: our WAN
+`ens37`: our LAN
+
+```bash
+iptables -A FORWARD -i ens37 -o ens33 -j ACCEPT
+iptables -A FORWARD -i ens33 -o ens37 -m state --state ESTABLISHED, RELATED -j ACCEPT
+iptables -t nat -A POSTROUTING -o ens33 -j MASQUERADE
 ```
 
 ### Restore Connection from your firewall to internet
 
 ```bash
-sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-sudo iptables -A OUTPUT -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+iptables -A OUTPUT -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 ```
 
 #### Allow ping packets
 
 ```bash
-sudo iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
-sudo iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
+iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
 ```
 
 #### Move drop rules to bottom
 
 Idealy create a bash script and execute this after modifying the rules.
 ```bash
-sudo iptables -D INPUT -j DROP
-sudo iptables -D OUTPUT -j DROP
-sudo iptables -D FORWARD -j DROP
-sudo iptables -A INPUT -j DROP
-sudo iptables -A OUTPUT -j DROP
-sudo iptables -A FORWARD -j DROP
+iptables -D INPUT -j DROP
+iptables -D OUTPUT -j DROP
+iptables -D FORWARD -j DROP
+iptables -A INPUT -j DROP
+iptables -A OUTPUT -j DROP
+iptables -A FORWARD -j DROP
 ```
 
 #### Saving Rules to disk
 
 ```bash
-sudo iptables-save > /etc/iptables/rules.v4
+iptables-save > /etc/iptables/rules.v4
 ```
+
+### ctstate types
+* **NEW** -- meaning that the packet has started a new connection, or otherwise associated with a connection which has not seen packets in both directions.
+
+* **ESTABLISHED** -- meaning that the packet is associated with a connection which has seen packets in both directions.
+
+* **RELATED** -- meaning that the packet is starting a new connection, but is associated with an existing connection, such as an FTP data transfer, or an ICMP error.
+
+
+
