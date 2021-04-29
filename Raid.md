@@ -2,7 +2,8 @@
 ```bash
 sfdisk -l
 # OR
-lsblk -o NAME,UUID # simpler overview of devices, partitions and UUID
+# simpler overview of devices, partitions and UUID
+lsblk -o NAME,UUID 
 ```
 ### Create new partition
 ```bash
@@ -45,12 +46,13 @@ umount /dev/sdb1 /mnt/data1
 sfdisk -d /dev/sdb | sfdisk --force /dev/sdc
 # this will create the same partitions on /dev/sdc as on /dev/sdb
 ```
-### mdadm create RAID 0,1,5
-*`to create ext4 partition follow partitioning instructions using /dev/md0`*
+### mdadm create RAID
+*`to create ext4 partition follow formatting instructions using /dev/md0`*
 
 *`follow mount instruction to mount this raid partition under your desired mountpoint. device name md0 might change after reboot if it is not in fstab`*
 ```bash
-mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/sdb1 /dev/sdc1 #change level for raid 1 or 5
+#change level for other raid types
+mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/sdb1 /dev/sdc1 
 ```
 ### check raid configurations
 ```bash
