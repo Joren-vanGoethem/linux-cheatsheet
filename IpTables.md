@@ -84,7 +84,8 @@ iptables -D INPUT -j DROP
 iptables -D OUTPUT -j DROP
 iptables -D FORWARD -j DROP
 iptables -A INPUT -j DROP
-iptables -A OUTPUT -j DROP
+# output accept is also possible, there is only a security risk if the firewall machine is compromised but if this happens the intruder can edit this anyway
+iptables -A OUTPUT -j DROP 
 iptables -A FORWARD -j DROP
 ```
 
