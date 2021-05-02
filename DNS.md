@@ -54,6 +54,7 @@ zone "mctinternal.be" {
     file "/etc/bind/zones/mctinternal.be";
 };
 
+# create reverse dir
 zone "20.168.192.in-addr.arpa" {
     type master;
     file "/etc/bind/zones/reverse/rev.20.168.192";
