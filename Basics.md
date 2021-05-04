@@ -10,6 +10,14 @@ nano /etc/ssh/sshd_config
 # uncomment PermitRootLogin and change Prohibit-Password to yes
 ```
 
+### create user
+```bash
+adduser <username>
+# OR
+useradd -m <username>
+passwd <username>
+```
+
 ### add user to sudo
 ```bash
 usermod -aG sudo <username>
@@ -36,4 +44,10 @@ netstat -tulpn
 ```bash
 cd /proc
 # all files in this directory contain info about hardware, kernel, processes
+```
+
+### add user to sudoers
+`/etc/sudoers`
+```bash
+<username> ALL=(ALL) ALL
 ```

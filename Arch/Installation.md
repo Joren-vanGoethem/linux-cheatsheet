@@ -1,12 +1,72 @@
 # Installation
 
-## FOLLOW official arch install first although this contains some issues, read thoroughly
+## partition disks
+```bash
+fdisk -l
+#partition a root partition and a swap partition
+mkfs.ext4 /dev/rootpartition
+mkswap /dev/swappartition
 
-### most of the next steps can be done during installation, networking is recommended to do during installation
+mount /dev/rootpartition /mnt/partition
+swapon /dev/swappartition
+```
+
+## install base & linux kernel and firware
+```bash
+pacstrap /mnt base linux linux-firmware
+```
+
+## generate fstab 
+```bash
+genfstab -U /mnt >> /mnt/etc/fstab
+```
+
+## root into new system
+```bash
+arch-chroot /mnt
+```
+
+## change root Password
+```bash
+passwd
+```
+
+## install grub NON-EUFI
+```bash
+pacman -S grub 
+grub-install /dev/sda
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+## install grub EUFI
+`not tested yet`
+```bash
+pacman -S grub efibootmgr
+mkdir /boot/efi
+mount /dev/sda1 /boot/efi
+grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+## cpu Microcode updates
+* ### amd
+```bash
+pacman -S amd-ucode
+```
+* ### intel
+```bash
+pacman -S intel-ucode
+```
 
 ## network configuration
-*not complete*
 ```bash
+pacman -S dhcpcd
+
+echo 'hostname' >> /etc/hostname
+
+echo '127.0.0.1 localhost' >> /etc/hosts
+echo '::1 localhost' >> /etc/hosts
+
 nano /etc/systemd/network/ens33.network
 # add this to the file
 # [Match]
@@ -14,24 +74,8 @@ nano /etc/systemd/network/ens33.network
 # [Network]
 # DHCP=yes
 
-systemctl enable systemd-networkd
-systemctl enable systemd-resolved
-systemctl start systemd-networkd
-systemctl start systemd-resolved
+systemctl enable dhcpcd
+systemctl disable systemd-networkd
+systemctl disable systemd-resolved
 ```
 
-
-## install Xorg
-```bash
-pacman -S xorg-server xorg-init
-
-Xorg :0 -configure
-
-cp /root/xorg.conf.new /etc/X11/xorg.conf
-```
-
-## kde configuration
-```bash
-nano ~/.xinitrc
-#add 'export DESKTOP_SESSION=plasma' and 'exec startplasma-x11'
-```
