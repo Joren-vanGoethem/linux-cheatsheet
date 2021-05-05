@@ -1,9 +1,9 @@
-## required, but alternatives can also be used
+## required
 ```bash
 pacman -S konsole git base-devel
 ```
 
-## optional 
+## "optional"
 ```bash
 pacman -S dolphin
 ```
@@ -16,3 +16,9 @@ sudo chown -R Username:Username ./yay
 cd yay
 makepkg -si
 ```
+
+## packages using yay
+
+[visual-studio-code-bin](https://aur.archlinux.org/packages/visual-studio-code-bin/?O=10&PP=10)
+[google-chrome](https://aur.archlinux.org/packages/google-chrome/)
+[curl](https://aur.archlinux.org/packages/curl-git/)
