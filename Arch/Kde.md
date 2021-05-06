@@ -1,3 +1,4 @@
+# X11
 ## install Xorg
 ```bash
 pacman -S xorg-server xorg-init
@@ -7,23 +8,35 @@ Xorg :0 -configure
 cp /root/xorg.conf.new /etc/X11/xorg.conf
 ```
 
-## Alternatively install Wayland
+## install KDE Packages
+```bash
+pacman -S plasma-meta # or plasma-desktop for minimal setup
+```
+
+## kde configuration
+`~/.xinitrc`
+```bash
+export DESKTOP_SESSION=plasma
+exec startplasma-x11
+```
+
+## autostart after login
+`~/.profile`
+```bash
+if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+  exec startx
+fi
+```
+
+# WAYLAND
+## install Wayland
 ```bash
 pacman -S wayland
 ```
 
 ## install KDE Packages
 ```bash
-pacman -S plasma-meta # or plasma-desktop for minimal setup
-# for wayland users ALSO install:
-pacman -S plasma-wayland-session # also add egl-wayland if you use nvidia
-```
-
-## kde configuration with X11
-`~/.xinitrc`
-```bash
-export DESKTOP_SESSION=plasma
-exec startplasma-x11
+pacman -S plasma-meta plasma-wayland-session # also add egl-wayland if you use nvidia
 ```
 
 ## kde configuration with wayland
@@ -39,12 +52,4 @@ systemctl start sddm
 **there has to be a non-root user enabled, make sure to give this user sudo permissions**
 ```bash
 systemctl enable sddm.service
-```
-
-## autostart after login
-`~/.profile`
-```bash
-if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-  exec systemctl start sddm.service
-fi
 ```
