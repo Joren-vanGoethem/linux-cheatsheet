@@ -44,12 +44,14 @@ pacman -S plasma-meta plasma-wayland-session # also add egl-wayland if you use n
 sddm --example-config > /etc/sddm.conf
 nano /etc/sddm.conf
 # look for `Session=` and add plasma.desktop
+# enablehighDPI scaling? to be tested
 # enabling auto login is also possible for a specific user
 systemctl start sddm
 ```
 
 ## autostart before login
 **there has to be a non-root user enabled, make sure to give this user sudo permissions**
+**there is no standard console/terminal, install konsole**
 ```bash
 systemctl enable sddm.service
 ```

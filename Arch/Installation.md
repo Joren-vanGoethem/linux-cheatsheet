@@ -9,6 +9,10 @@ mkswap /dev/swappartition
 
 mount /dev/rootpartition /mnt/partition
 swapon /dev/swappartition
+
+# IF using a eufi enabled bios create an extra partition of about 1Gb, format this partition using FAT32
+pacman -S dosfstools
+mkfs.msdos -F 32 /dev/bootpartition
 ```
 
 ## install base & linux kernel and firware
@@ -43,7 +47,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 ```bash
 pacman -S grub efibootmgr
 mkdir /boot/efi
-mount /dev/sda1 /boot/efi
+mount /dev/bootpartition /boot/efi
 grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
