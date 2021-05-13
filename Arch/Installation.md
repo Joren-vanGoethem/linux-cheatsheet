@@ -4,13 +4,14 @@
 ```bash
 fdisk -l
 #partition a root partition and a swap partition
+# IF using a eufi enabled bios create an extra partition of about 1Gb, format this partition using FAT32
 mkfs.ext4 /dev/rootpartition
 mkswap /dev/swappartition
 
 mount /dev/rootpartition /mnt/partition
 swapon /dev/swappartition
 
-# IF using a eufi enabled bios create an extra partition of about 1Gb, format this partition using FAT32
+#eufi partition
 pacman -S dosfstools
 mkfs.msdos -F 32 /dev/bootpartition
 ```
