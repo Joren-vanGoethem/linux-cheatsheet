@@ -8,7 +8,7 @@ fdisk -l
 mkfs.ext4 /dev/rootpartition
 mkswap /dev/swappartition
 
-mount /dev/rootpartition /mnt/partition
+mount /dev/rootpartition /mnt
 swapon /dev/swappartition
 
 #eufi partition
