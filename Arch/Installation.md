@@ -16,6 +16,12 @@ pacman -S dosfstools
 mkfs.msdos -F 32 /dev/bootpartition
 ```
 
+## get a network connection
+```bash
+iwctl station wlan0 get-networks
+iwctl station wlan0 connect 'ssid'
+```
+
 ## install base & linux kernel and firware
 ```bash
 pacstrap /mnt base linux linux-firmware
