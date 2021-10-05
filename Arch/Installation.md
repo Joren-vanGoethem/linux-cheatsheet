@@ -48,9 +48,13 @@ arch-chroot /mnt
 passwd
 ```
 
+## install needed stuff
+```bash
+pacman -S dhcpcd iwd git grub
+```
+
 ## install grub NON-EUFI
 ```bash
-pacman -S grub 
 grub-install /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
