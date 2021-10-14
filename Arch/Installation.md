@@ -18,6 +18,10 @@ mkswap /dev/swappartition
 
 mount /dev/rootpartition /mnt
 swapon /dev/swappartition
+
+#eufi partition
+pacman -S dosfstools
+mkfs.msdos -F 32 /dev/bootpartition
 ```
 
 ## get a network connection
