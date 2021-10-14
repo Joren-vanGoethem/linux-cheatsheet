@@ -9,6 +9,8 @@ boot partition - 1GB
 main partition - leftover space
 swap partition - a few gb up to the amount of ram you have (which would be overkill)
 
+fdisk /dev/osdrivename
+
 #partition a root partition and a swap partition
 # IF using a eufi enabled bios create an extra partition of about 1Gb, format this partition using FAT32
 mkfs.ext4 /dev/rootpartition
