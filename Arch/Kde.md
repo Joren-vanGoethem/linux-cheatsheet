@@ -55,3 +55,9 @@ systemctl start sddm
 ```bash
 systemctl enable sddm.service
 ```
+
+## disable wallet
+```bash
+[Wallet]
+Enabled=false
+```
