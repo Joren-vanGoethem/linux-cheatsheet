@@ -10,7 +10,7 @@ cp /root/xorg.conf.new /etc/X11/xorg.conf
 
 ## install KDE Packages
 ```bash
-pacman -S plasma-meta # or plasma-desktop for minimal setup
+pacman -S plasma-desktop # or plasma-meta for minimal setup
 ```
 
 ## kde configuration
@@ -36,7 +36,7 @@ pacman -S wayland
 
 ## install KDE Packages
 ```bash
-pacman -S plasma-meta plasma-wayland-session # also add egl-wayland if you use nvidia
+pacman -S plasma-desktop plasma-wayland-session # also add egl-wayland if you use nvidia
 ```
 
 ## kde configuration with wayland
