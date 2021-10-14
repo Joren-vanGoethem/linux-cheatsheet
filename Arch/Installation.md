@@ -16,10 +16,6 @@ mkswap /dev/swappartition
 
 mount /dev/rootpartition /mnt
 swapon /dev/swappartition
-
-#eufi partition
-pacman -S dosfstools
-mkfs.msdos -F 32 /dev/bootpartition
 ```
 
 ## get a network connection
@@ -53,7 +49,7 @@ passwd
 pacman -S dhcpcd iwd git grub
 ```
 
-## install grub NON-EUFI
+## install grub for NON-EUFI !!!
 ```bash
 grub-install /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -79,24 +75,13 @@ pacman -S amd-ucode
 pacman -S intel-ucode
 ```
 
-## network configuration
+## network configuration 
 ```bash
-pacman -S dhcpcd
-
 echo 'hostname' >> /etc/hostname
 
 echo '127.0.0.1 localhost' >> /etc/hosts
 echo '::1 localhost' >> /etc/hosts
 
-nano /etc/systemd/network/ens33.network
-# add this to the file
-# [Match]
-# name=ens33
-# [Network]
-# DHCP=yes
-
 systemctl enable dhcpcd
-systemctl disable systemd-networkd
-systemctl disable systemd-resolved
 ```
 
