@@ -57,6 +57,7 @@ systemctl enable sddm.service
 ```
 
 ## disable wallet
+~/.config/kwalletrc
 ```bash
 [Wallet]
 Enabled=false
