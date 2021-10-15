@@ -62,3 +62,9 @@ systemctl enable sddm.service
 [Wallet]
 Enabled=false
 ```
+
+## issues with extra monitors
+```bash
+yay kscreen
+```
+
