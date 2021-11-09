@@ -55,13 +55,13 @@ pacman -S dhcpcd iwd git grub
 ```
 
 ## install grub for NON-EUFI !!!
+`not tested yet`
 ```bash
 grub-install /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
 ## install grub EUFI
-`not tested yet`
 ```bash
 pacman -S grub efibootmgr
 mkdir /boot/efi
