@@ -54,16 +54,9 @@ passwd
 pacman -S dhcpcd iwd git grub
 ```
 
-## install grub for NON-EUFI !!!
-`not tested yet`
-```bash
-grub-install /dev/sda
-grub-mkconfig -o /boot/grub/grub.cfg
-```
-
 ## install grub EUFI
 ```bash
-pacman -S grub efibootmgr
+pacman -S grub efibootmgr # look into rEFInd for a better alternative to grub
 mkdir /boot/efi
 mount /dev/bootpartition /boot/efi
 grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi
